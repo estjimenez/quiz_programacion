@@ -1,0 +1,66 @@
+
+body {
+    margin: 10px;
+    font-family: Arial, sans-serif;
+   
+}
+h2{
+    width: 300px;
+    margin: 40px auto; 
+    padding: 20px; 
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid black;
+}
+
+th, td {
+    padding: 8px;
+    text-align: left;
+}
+
+.msg {
+    color: red;
+    font-weight: bold;
+}
+
+#modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    background-color: white;
+    border: 2px solid black;
+    padding: 20px;
+    
+  
+}
+.div{
+    background-color: aqua;
+    color: red;
+}
+
+
+#registro {
+    width: 300px;
+    margin: 40px auto; 
+    padding: 20px; 
+    border: 1px solid #000; 
+    border-radius: 10px; 
+    background-color: #4aa6d4; 
+}
+.msg {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-top: 10px;
+    color: rgb(255, 0, 0);  
+}
+
+
+.msg.error {
+    color: red;
+}
