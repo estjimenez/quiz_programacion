@@ -1,10 +1,22 @@
 const registro = document.getElementById('registro');
-const msg = document.getElementById("msg");
-const estudiantesTabla = document.querySelector("#Estudiantes");
+const estudiantesTabla = document.querySelector("#Estudiantes tbody");
 const modal = document.getElementById('modal');
-let estudianteAEliminar = null;
+const msg2 = document.createElement('div');
+msg2.classList.add('msg2');
+document.body.appendChild(msg2);
 
+let estudianteAEliminar = null;
 const estudiantes = [];
+
+function mostrarMensaje(mensaje, esError = false) {
+    msg2.textContent = mensaje;
+    msg2.style.color = esError ? 'red' : 'black';
+    msg2.style.display = 'block';
+    
+    setTimeout(() => {
+        msg2.style.display = 'none';
+    }, 3000);
+}
 
 function validarCodigo(codigo) {
     return !estudiantes.some(est => est.codigo === codigo);
@@ -23,13 +35,14 @@ registro.addEventListener('submit', (event) => {
     const nota2 = parseFloat(registro.nota2.value);
     const nota3 = parseFloat(registro.nota3.value);
     const nota4 = parseFloat(registro.nota4.value);
+
     if ([nota1, nota2, nota3, nota4].some(nota => nota < 0 || nota > 5)) {
-        msg.textContent = "Las notas deben estar entre 0 y 5.";
+        mostrarMensaje("Las notas deben estar entre 0 y 5.", true);
         return;
     }
 
     if (!validarCodigo(codigo)) {
-        msg.textContent = "El código ya existe.";
+        mostrarMensaje("El código ya existe.", true);
         return;
     }
 
@@ -42,8 +55,7 @@ registro.addEventListener('submit', (event) => {
     
     estudiantes.push(estudiante);
     agregarEstudianteATabla(estudiante);
-    formulario.reset();
-    msg.textContent = "";
+    registro.reset();
 });
 
 function agregarEstudianteATabla(estudiante) {
@@ -58,11 +70,11 @@ function agregarEstudianteATabla(estudiante) {
         <td>${estudiante.nota4}</td>
         <td>${estudiante.definitiva}</td>
         <td>${estudiante.estado}</td>
-        
+
     `;
 
     row.querySelector('.eliminarBtn').addEventListener('click', () => {
-        estudianteAEliminar = row;
+        estudianteAEliminar = { row, codigo: estudiante.codigo };
         modal.style.display = 'block';
     });
 
@@ -71,8 +83,13 @@ function agregarEstudianteATabla(estudiante) {
 
 document.getElementById('confirmarEliminar').addEventListener('click', () => {
     if (estudianteAEliminar) {
-        estudianteAEliminar.remove();
+        const index = estudiantes.findIndex(est => est.codigo === estudianteAEliminar.codigo);
+        if (index !== -1) {
+            estudiantes.splice(index, 1); 
+        }
+        estudianteAEliminar.row.remove();
         modal.style.display = 'none';
+        mostrarMensaje("Estudiante eliminado exitosamente.");
         estudianteAEliminar = null;
     }
 });
